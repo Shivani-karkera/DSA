@@ -48,7 +48,7 @@ class Solution
     int[] JobScheduling(Job arr[], int n)
     {
         
-        // n2
+        // nlogn+n*m
         Arrays.sort(arr, new Comparator<Job>(){
             public int compare(Job j1, Job j2){
                 return j2.profit-j1.profit;
@@ -71,32 +71,6 @@ class Solution
             }
             return new int[] {jobCount,total};
         
-        
-        // nlogn
-        PriorityQueue<Integer> minHeap= new PriorityQueue<Integer>();
-        
-         Arrays.sort(arr, new Comparator<Job>(){
-            public int compare(Job j1, Job j2){
-                return j2.profit-j1.profit;
-            }});
-            
-            int total=0;
-            int jobCount=0;
-            for(Job j: arr){
-                
-                if(minHeap.size()<j.deadline){
-                     minHeap.add(j.profit);
-                    total+=j.profit;
-                    jobCount++;
-                   
-                }
-                else if(!minHeap.isEmpty() && minHeap.peek()<j.profit){
-                    total+=j.profit-minHeap.poll();
-                    minHeap.add(j.profit);
-                    
-                }
-                
-            }
         
         return new int[] {jobCount,total};
         
