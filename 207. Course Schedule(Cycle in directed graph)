@@ -1,0 +1,86 @@
+//dfs find cycle
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+   ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        
+        for (int[] pre : prerequisites) {
+            int u = pre[1]; // prerequisite course
+            int v = pre[0]; // course to be taken
+            adj.get(u).add(v);
+        }
+
+        boolean[] visited = new boolean[numCourses];
+        boolean[] dfsvisited = new boolean[numCourses];
+       
+        for(int i=0;i<numCourses;i++){
+            if (!visited[i]){
+                if( cycledfs(i,visited, dfsvisited, adj))
+                    return false;
+            }
+        }return true;
+    }
+
+
+    boolean cycledfs(int src, boolean[] visited, boolean[] dfsvisited,
+    ArrayList<ArrayList<Integer>> adj) {
+     dfsvisited[src] = true;
+     visited[src] = true;
+            for (int i : adj.get(src)) {
+                if (!visited[i]) {
+                   if(cycledfs(i,visited, dfsvisited, adj)) return true;
+                } else if (dfsvisited[i])
+                    return true;
+            }
+             dfsvisited[src] = false;
+             return false;
+    }
+}
+
+
+
+//BFS Khans's toposort
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>();
+        int[] indegree = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] i : prerequisites) { //create adj list
+            int u = i[1];
+            int v = i[0];
+            adj.get(u).add(v);
+            indegree[v]++;
+        }
+
+        Queue<Integer> q = new LinkedList<Integer>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0)
+                q.add(i);
+        }
+
+        int i = 0;
+        int c = 0;
+        while (!q.isEmpty()) {
+            int src = q.poll();
+            // res[i++] = src;
+            c++;
+            for (int ele : adj.get(src)) {
+                indegree[ele]--;
+                if (indegree[ele] == 0)
+                    q.add(ele);
+            }
+
+        }
+        if (c == numCourses)
+            return true;
+        else
+            return false;
+    }
+
+}
