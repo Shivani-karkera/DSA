@@ -1,0 +1,64 @@
+//DFS
+
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int[] color = new int[graph.length];
+        Arrays.fill(color, -1);
+        for (int i = 0; i < graph.length; i++) {
+            if (color[i] == -1) {
+                if (!dfs(i, graph, color, 0))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    boolean dfs(int node, int[][] graph, int[] color, int shade) {
+        color[node] = shade;
+        for (int i : graph[node]) {
+            if (color[i] == -1) {
+                if (!dfs(i, graph, color, 1 - shade))
+                    return false;
+            } else if (color[i] == shade)
+                return false;
+        }
+        return true;
+    }
+}
+
+// BFS
+
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int[] color = new int[graph.length];
+        Arrays.fill(color, -1);
+
+        for (int i = 0; i < graph.length; i++) {
+            if (color[i] == -1) {
+                if (!bfs(i, graph, color, 0))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    boolean bfs(int node, int[][] graph, int[] color, int shade) {
+        Queue<Integer> q = new LinkedList<Integer>();
+        q.offer(node);
+        color[node] = shade;
+        while (!q.isEmpty()) {
+            int src = q.poll();
+            for (int i : graph[src]) {
+                if (color[i] == -1) {
+                    color[i] = 1 - color[src];
+                    q.offer(i);
+                } else if (color[i] == color[src])
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}
