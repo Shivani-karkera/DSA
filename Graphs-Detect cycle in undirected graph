@@ -1,0 +1,84 @@
+
+//BFS
+
+class Pair {
+    public int cur;
+    public int prev;
+
+    public Pair(int cur, int prev) {
+        this.cur = cur;
+        this.prev = prev;
+    }
+}
+
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code hereboolean[] visited = new boolean[numCourses];
+
+        boolean[] visited = new boolean[V];
+       
+        for(int i=0;i<V;i++){
+            if (!visited[i]){
+                if( cyclebfs(i, visited, adj))
+                    return true;
+            }
+        }return false;
+    }
+
+
+    boolean cyclebfs(int s, boolean[] visited, ArrayList<ArrayList<Integer>> adj) {
+                Queue<Pair> q = new LinkedList<Pair>();
+                 q.offer(new Pair(s, -1));
+        visited[s] = true;
+        
+        while (!q.isEmpty()) {
+            int src = q.peek().cur;
+            int par = q.peek().prev;
+            q.poll();
+            for (int i : adj.get(src)) {
+                if (!visited[i]) {
+                    visited[i] = true;
+                    q.offer(new Pair(i, src));
+                } else if (par != i)
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+//DFS
+
+
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code hereboolean[] visited = new boolean[numCourses];
+
+        boolean[] visited = new boolean[V];
+       
+        for(int i=0;i<V;i++){
+            if (!visited[i]){
+                if( cycledfs(i,-1, visited, adj))
+                    return true;
+            }
+        }return false;
+    }
+
+
+    boolean cycledfs(int src,int par, boolean[] visited, ArrayList<ArrayList<Integer>> adj) {
+     visited[src] = true;
+            for (int i : adj.get(src)) {
+                if (!visited[i]) {
+                    visited[i] = true;
+                    if(cycledfs(i,src,visited,adj)) return true;
+                } else if (par != i)
+                    return true;
+            }
+        
+        return false;
+    }
+}
