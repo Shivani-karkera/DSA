@@ -14,8 +14,7 @@ class Pair {
 class Solution {
     // Function to detect cycle in an undirected graph.
     public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
-        // Code hereboolean[] visited = new boolean[numCourses];
-
+       
         boolean[] visited = new boolean[V];
        
         for(int i=0;i<V;i++){
@@ -56,7 +55,6 @@ class Solution {
 class Solution {
     // Function to detect cycle in an undirected graph.
     public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
-        // Code hereboolean[] visited = new boolean[numCourses];
 
         boolean[] visited = new boolean[V];
        
